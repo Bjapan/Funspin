@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spin & Win Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    #wheel {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 10px solid #333;
+      position: relative;
+      margin: 30px auto;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    .segment {
+      width: 50%;
+      height: 50%;
+      position: absolute;
+      transform-origin: 100% 100%;
+      background: #fdd835;
+      border: 1px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #222;
+    }
+    #spin-btn {
+      padding: 10px 30px;
+      background: #28a745;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎉 Spin & Win Game 🎉</h1>
+  
+  <!-- ✅ AdSense Ad (Top of Page) -->
+  <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+       data-ad-slot="1234567890"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+  <div id="wheel"></div>
+  <button id="spin-btn">Spin Now</button>
+  <div id="result"></div>
+
+  <!-- ✅ AdSense Ad (Below Result) -->
+  <ins class="adsbygoogle"
+       style="display:block; margin-top: 20px;"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+       data-ad-slot="1234567890"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
+  <!-- 🔊 Audio -->
+  <audio id="spin-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-slot-machine-wheel-1934.mp3"></audio>
+  <audio id="win-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
+
+  <script>
+    const wheel = document.getElementById("wheel");
+    const btn = document.getElementById("spin-btn");
+    const result = document.getElementById("result");
+    const spinSound = document.getElementById("spin-sound");
+    const winSound = document.getElementById("win-sound");
+
+    const prizes = ["$5", "Try Again", "Free Spin", "$10", "Better Luck", "$50", "No Win", "Jackpot"];
+    const anglePerSegment = 360 / prizes.length;
+
+    // Create segments
+    prizes.forEach((prize, i) => {
+      let segment = document.createElement("div");
+      segment.className = "segment";
+      segment.style.transform = `rotate(${i * anglePerSegment}deg) skewY(-${90 - anglePerSegment}deg)`;
+      segment.style.background = i % 2 === 0 ? "#FFD700" : "#FFA500";
+      segment.innerHTML = prize;
+      wheel.appendChild(segment);
+    });
+
+    btn.addEventListener("click", () => {
+      spinSound.currentTime = 0;
+      spinSound.play();
+
+      let randomDeg = Math.floor(3600 + Math.random() * 360);
+      wheel.style.transition = "transform 4s ease-out";
+      wheel.style.transform = `rotate(${randomDeg}deg)`;
+
+      let prizeIndex = Math.floor(((360 - (randomDeg % 360)) % 360) / anglePerSegment);
+
+      setTimeout(() => {
+        spinSound.pause();
+        winSound.play();
+        result.innerText = `You won: ${prizes[prizeIndex]} 🎁`;
+      }, 4000);
+    });
+  </script>
+
+</body>
+</html>
+<p style="font-size:14px; color:#555; margin-top:10px;">
+  🔔 Note: This game is for entertainment purposes only. All rewards are virtual and do not have real-world value.
+</p>
